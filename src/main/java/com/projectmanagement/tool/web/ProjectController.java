@@ -21,12 +21,15 @@ public class ProjectController {
 
   @PostMapping("")
   public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
-    // response entity has more control options over json responses
-      if(result.hasErrors()){
-          return new ResponseEntity<String>("Invalid Project", HttpStatus.BAD_REQUEST);
+      ResponseEntity<?> res;
+      // response entity has more control options over json responses
+      if (result.hasErrors()) {
+          res = new ResponseEntity<>("Invalid Project", HttpStatus.BAD_REQUEST);
 
+      } else {
+          projectService.saveOrUpdateProject(project);
+          res = new ResponseEntity<>(project, HttpStatus.CREATED);
       }
-    projectService.saveOrUpdateProject(project);
-    return new ResponseEntity<>(project, HttpStatus.CREATED);
+      return res;
   }
 }
