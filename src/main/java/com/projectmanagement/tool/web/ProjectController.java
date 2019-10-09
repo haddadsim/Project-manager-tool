@@ -1,6 +1,7 @@
 package com.projectmanagement.tool.web;
 
 import com.projectmanagement.tool.domain.Project;
+import com.projectmanagement.tool.services.MapValidationErrorService;
 import com.projectmanagement.tool.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,17 +20,18 @@ public class ProjectController {
 
   @Autowired private ProjectService projectService;
 
-  @PostMapping("")
-  public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
-      ResponseEntity<?> res;
-      // response entity has more control options over json responses
-      if (result.hasErrors()) {
-          res = new ResponseEntity<>("Invalid Project", HttpStatus.BAD_REQUEST);
+  @Autowired private MapValidationErrorService mapValidationErrorService;
 
-      } else {
-          projectService.saveOrUpdateProject(project);
-          res = new ResponseEntity<>(project, HttpStatus.CREATED);
-      }
-      return res;
+  @PostMapping("")
+  public ResponseEntity<?> createNewProject(
+      @Valid @RequestBody Project project, BindingResult result) {
+    ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+    if (errorMap != null) return errorMap;
+    ResponseEntity<?> res;
+
+    projectService.saveOrUpdateProject(project);
+    res = new ResponseEntity<>(project, HttpStatus.CREATED);
+
+    return res;
   }
 }

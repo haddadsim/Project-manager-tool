@@ -11,7 +11,7 @@ import java.util.Date;
 public class Project {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
   @NotBlank(message = "Project Name is require")
