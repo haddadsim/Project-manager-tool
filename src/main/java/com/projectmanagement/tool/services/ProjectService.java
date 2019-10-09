@@ -33,4 +33,8 @@ public class ProjectService {
     }
     return project;
   }
+  public Iterable<Project> findAllProjects() { //iterable returns a transverse json object of the entity
+    return projectRepository.findAll();
+
+  }
 }
