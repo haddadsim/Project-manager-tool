@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler
-  public final ResponseEntity <Object>handleProjectIdException(
+  public final ResponseEntity<Object> handleProjectIdException(
       ProjectIdException projectIdException, WebRequest request) {
     ProjectIdExceptionResponse exceptionResponse =
         new ProjectIdExceptionResponse(projectIdException.getMessage());
